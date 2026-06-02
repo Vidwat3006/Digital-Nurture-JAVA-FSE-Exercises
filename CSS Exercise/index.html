@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Community Event Portal</title>
+
+    <!-- Internal CSS -->
+    <style>
+        body{
+            background-color:bisque;
+        }
+    </style>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#events">Events</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <main>
+
+        <!-- Home -->
+        <section id="home">
+
+            <div id="mainHeader">
+
+                <!-- Inline CSS -->
+                <h1 style="color:red;">
+                    Welcome to the Local Community Event Portal
+                </h1>
+
+                <marquee>
+                    Limited Offer:
+                    <span class="highlight">
+                        50% OFF
+                    </span>
+                    on Event Registration
+                </marquee>
+
+            </div>
+
+        </section>
+
+        <!-- Events -->
+        <section id="events">
+
+            <h2>Gallery of Completed Events</h2>
+
+            <table class="gallery">
+
+                <tr>
+                    <td class="eventCard">
+                        <img src="images/img1.jpg" class="imgStyle"
+                             ondblclick="enlarge(this)">
+                        <p>Community Meeting</p>
+                    </td>
+
+                    <td class="eventCard">
+                        <img src="images/img2.jpg" class="imgStyle"
+                             ondblclick="enlarge(this)">
+                        <p>Food Festival</p>
+                    </td>
+
+                    <td class="eventCard">
+                        <img src="images/img3.jpg" class="imgStyle"
+                             ondblclick="enlarge(this)">
+                        <p>Music Night</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="eventCard">
+                        <img src="images/img4.jpg" class="imgStyle"
+                             ondblclick="enlarge(this)">
+                        <p>Sports Day</p>
+                    </td>
+
+                    <td class="eventCard">
+                        <img src="images/img5.jpg" class="imgStyle"
+                             ondblclick="enlarge(this)">
+                        <p>Art Exhibition</p>
+                    </td>
+
+                    <td class="eventCard">
+                        <img src="images/img6.jpg" class="imgStyle"
+                             ondblclick="enlarge(this)">
+                        <p>Cultural Fest</p>
+                    </td>
+                </tr>
+
+            </table>
+
+            <br>
+
+            <!-- Registration Form -->
+            <div class="regForm">
+
+                <form>
+
+                    <h1>Event Registration Form</h1>
+
+                    <label>Name:</label>
+                    <input type="text" id="name" required>
+
+                    <br><br>
+
+                    <label>Email:</label>
+                    <input type="email" id="email" required>
+
+                    <br><br>
+
+                    <label>Phone:</label>
+                    <input type="text" onblur="validate(this)">
+
+                    <br><br>
+
+                    <label>Date:</label>
+                    <input type="date" id="date">
+
+                    <br><br>
+
+                    <label>Event Type:</label>
+
+                    <select id="type" onchange="changeMethod(this)">
+                        <option value="default">--Select--</option>
+                        <option value="cultural-fest">Cultural Fest</option>
+                        <option value="music-concert">Music Concert</option>
+                        <option value="food-fair">Food Fair</option>
+                        <option value="sport-tournament">Sports Tournament</option>
+                    </select>
+
+                    <br><br>
+
+                    <span id="price"></span>
+
+                    <br><br>
+
+                    <label>Message:</label>
+                    <textarea id="message"
+                              onkeypress="count(this)">
+                    </textarea>
+
+                    <br><br>
+
+                    <span id="countChar"></span>
+
+                    <br><br>
+
+                    <button type="button"
+                            onclick="saveData();confirmation();">
+                        Submit
+                    </button>
+
+                    <br><br>
+
+                    <output id="output"></output>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- Multi Column Section -->
+        <section class="news">
+
+            <h2>Community Bulletin</h2>
+
+            <p>
+                The city council has announced several upcoming
+                events for residents. A food festival, cultural
+                celebrations, sports tournaments and music nights
+                will be conducted throughout the year. Citizens
+                are encouraged to participate actively. The local
+                administration also plans to improve parks,
+                roads, libraries and recreational centers. New
+                volunteer programs are available for students and
+                professionals interested in community service.
+            </p>
+
+        </section>
+
+        <!-- Contact -->
+        <section id="contact">
+
+            <video controls width="250"
+                oncanplay="startMessage()">
+
+                <source src="Amores-Perros_720p.mp4">
+            </video>
+
+            <br>
+
+            <span id="video"></span>
+
+            <br><br>
+
+            <button onclick="findLocation()">
+                Find Nearby Events
+            </button>
+
+            <p id="locationOutput"></p>
+
+        </section>
+
+    </main>
+
+    <footer>
+
+        <p>For more information click below</p>
+
+        <a href="help.html" target="_blank">
+            Help Document
+        </a>
+
+    </footer>
+
+    <script>
+
+        function saveData(){
+            localStorage.setItem(
+                "event-type",
+                document.getElementById("type").value
+            );
+        }
+
+        function validate(e){
+            if(e.value.length!=10)
+                e.style.backgroundColor="red";
+            else
+                e.style.backgroundColor="lightgreen";
+        }
+
+        function confirmation(){
+
+            let name=document.getElementById("name").value;
+            let email=document.getElementById("email").value;
+            let date=document.getElementById("date").value;
+            let type=document.getElementById("type").value;
+            let message=document.getElementById("message").value;
+
+            if(name=="" || email=="" ||
+               date=="" || type=="default" ||
+               message==""){
+                alert("Fill all details");
+                return;
+            }
+
+            document.getElementById("output")
+            .innerHTML="Form Submitted Successfully";
+        }
+
+        function changeMethod(e){
+
+            let price=document.getElementById("price");
+
+            if(e.value=="cultural-fest")
+                price.innerHTML="Price: $20";
+
+            else if(e.value=="music-concert")
+                price.innerHTML="Price: $30";
+
+            else if(e.value=="food-fair")
+                price.innerHTML="Price: $15";
+
+            else if(e.value=="sport-tournament")
+                price.innerHTML="Price: $40";
+        }
+
+        function enlarge(img){
+            img.style.transform="scale(2)";
+        }
+
+        function count(e){
+            document.getElementById("countChar")
+            .innerHTML=
+            "Characters: "+(e.value.length+1);
+        }
+
+        function startMessage(){
+            document.getElementById("video")
+            .innerHTML="Enjoy your video";
+        }
+
+        window.onload=function(){
+
+            let type=
+            localStorage.getItem("event-type");
+
+            if(type)
+                document.getElementById("type").value=type;
+        }
+
+        function findLocation(){
+
+            navigator.geolocation.getCurrentPosition(
+
+                function(position){
+
+                    document.getElementById(
+                        "locationOutput"
+                    ).innerHTML=
+
+                    "Latitude: "
+                    + position.coords.latitude +
+                    "<br>Longitude: "
+                    + position.coords.longitude;
+                },
+
+                function(){
+                    document.getElementById(
+                        "locationOutput"
+                    ).innerHTML=
+                    "Location access denied";
+                }
+            );
+        }
+
+    </script>
+
+</body>
+</html>
